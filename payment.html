@@ -1,0 +1,850 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f5a9c5">
+<title>إتمام الشراء | TREND212</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box}
+
+body{
+ margin:0;
+ background:#fff7fa;
+ color:#34252d;
+ font-family:Cairo,sans-serif;
+}
+
+header{
+ background:white;
+ padding:15px 5%;
+ box-shadow:0 2px 12px #0001;
+ text-align:center;
+}
+
+.logo{
+ font-size:25px;
+ font-weight:900;
+ color:#ce5789;
+}
+
+.container{
+ max-width:650px;
+ margin:25px auto;
+ padding:15px;
+}
+
+.card{
+ background:white;
+ border:1px solid #f1dce5;
+ border-radius:17px;
+ padding:20px;
+ margin-bottom:17px;
+}
+
+h2{
+ font-size:19px;
+ color:#ce5789;
+ margin-top:0;
+}
+
+label{
+ display:block;
+ font-weight:800;
+ font-size:13px;
+ margin-bottom:6px;
+}
+
+.field{margin-bottom:14px}
+
+input,select,textarea{
+ width:100%;
+ padding:12px;
+ border:1px solid #eed8e2;
+ border-radius:10px;
+ font-family:inherit;
+ background:white;
+ outline-color:#e982ac;
+}
+
+select:disabled{
+ background:#f8f3f5;
+ color:#999;
+}
+
+textarea{resize:vertical}
+
+.summary-line{
+ display:flex;
+ justify-content:space-between;
+ padding:9px 0;
+ border-bottom:1px solid #f3e8ed;
+ font-size:14px;
+ gap:10px;
+}
+
+.summary-line:last-child{border:0}
+
+.total{
+ font-size:19px;
+ font-weight:900;
+ color:#ce5789;
+}
+
+.deposit{
+ background:#fff0f6;
+ padding:15px;
+ border-radius:13px;
+ text-align:center;
+ margin-top:15px;
+}
+
+.deposit strong{
+ font-size:30px;
+ color:#ce5789;
+ display:block;
+}
+
+.number{
+ font-size:25px;
+ font-weight:900;
+ direction:ltr;
+ color:#a64270;
+}
+
+button{
+ width:100%;
+ border:0;
+ border-radius:11px;
+ padding:13px;
+ font-family:inherit;
+ font-weight:900;
+ cursor:pointer;
+}
+
+.copy{
+ background:#fce7f0;
+ color:#a64270;
+ margin-top:9px;
+}
+
+.send{
+ background:#20a65a;
+ color:white;
+ margin-top:10px;
+}
+
+.back{
+ background:#fce7f0;
+ color:#a64270;
+ margin-top:10px;
+}
+
+.note{
+ font-size:12px;
+ color:#887680;
+ line-height:1.9;
+}
+
+.product-row{
+ padding:13px 0;
+ border-bottom:1px solid #f3e8ed;
+ font-size:13px;
+}
+
+.product-info{
+ display:flex;
+ gap:12px;
+ align-items:center;
+}
+
+.product-image{
+ width:85px;
+ height:100px;
+ object-fit:cover;
+ border-radius:10px;
+ border:1px solid #f1dce5;
+ flex-shrink:0;
+}
+
+.product-details{
+ flex:1;
+ line-height:2;
+}
+
+.product-details strong{color:#ce5789}
+
+.empty{
+ text-align:center;
+ color:#b44;
+ padding:15px;
+}
+
+.gift{
+ background:#fff5dc;
+ color:#956b20;
+ padding:12px;
+ border-radius:10px;
+ text-align:center;
+ font-weight:900;
+ margin-top:12px;
+}
+
+.free{
+ color:#20a65a;
+ font-weight:900;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+ <div class="logo">TREND212</div>
+ <div>إتمام الشراء ♡</div>
+</header>
+
+<main class="container">
+
+<!-- مراجعة الطلب -->
+<div class="card">
+
+ <h2>مراجعة طلبك</h2>
+
+ <div id="orderProducts"></div>
+
+ <div class="summary-line">
+  <span>إجمالي المنتجات</span>
+  <strong id="productsTotal">0 جنيه</strong>
+ </div>
+
+ <div class="summary-line">
+  <span>التوصيل</span>
+  <strong id="deliveryStatus">يتم تحديده عبر واتساب</strong>
+ </div>
+
+ <div class="summary-line">
+  <span>الهدية</span>
+  <strong>مجانية 🎁</strong>
+ </div>
+
+ <div class="summary-line total">
+  <span>العربون المطلوب</span>
+  <strong>100 جنيه</strong>
+ </div>
+
+ <div class="gift">
+  🎁 هدية مجانية من TREND212 مع كل طلب
+ </div>
+
+ <p class="note">
+  🚚 الطلبات بقيمة 3000 جنيه أو أكثر تحصل على توصيل مجاني.
+  باقي الطلبات يتم تحديد سعر توصيلها عبر واتساب.
+ </p>
+
+</div>
+
+
+<!-- بيانات التوصيل -->
+<div class="card">
+
+ <h2>بيانات التوصيل</h2>
+
+ <div class="field">
+  <label>الاسم بالكامل</label>
+  <input id="name" placeholder="اسم العميل">
+ </div>
+
+ <div class="field">
+  <label>رقم الهاتف</label>
+  <input id="phone" type="tel" placeholder="01xxxxxxxxx">
+ </div>
+
+ <div class="field">
+  <label>المحافظة</label>
+
+  <select id="governorate">
+   <option value="">اختار المحافظة</option>
+   <option>القاهرة</option>
+   <option>الجيزة</option>
+   <option>الإسكندرية</option>
+   <option>الدقهلية</option>
+   <option>الشرقية</option>
+   <option>الغربية</option>
+   <option>المنوفية</option>
+   <option>القليوبية</option>
+   <option>البحيرة</option>
+   <option>كفر الشيخ</option>
+   <option>دمياط</option>
+   <option>بورسعيد</option>
+   <option>الإسماعيلية</option>
+   <option>السويس</option>
+   <option>شمال سيناء</option>
+   <option>جنوب سيناء</option>
+   <option>بني سويف</option>
+   <option>الفيوم</option>
+   <option>المنيا</option>
+   <option>أسيوط</option>
+   <option>سوهاج</option>
+   <option>قنا</option>
+   <option>الأقصر</option>
+   <option>أسوان</option>
+   <option>البحر الأحمر</option>
+   <option>الوادي الجديد</option>
+   <option>مطروح</option>
+  </select>
+ </div>
+
+ <div class="field">
+  <label>المركز أو المدينة</label>
+
+  <select id="center" disabled>
+   <option value="">اختار المحافظة أولاً</option>
+  </select>
+ </div>
+
+ <div class="field">
+  <label>العنوان بالتفصيل</label>
+  <textarea id="address" rows="3" placeholder="الشارع ورقم العقار وأقرب علامة مميزة"></textarea>
+ </div>
+
+ <div class="field">
+  <label>ملاحظات إضافية</label>
+  <textarea id="notes" rows="2" placeholder="اختياري"></textarea>
+ </div>
+
+</div>
+
+
+<!-- بيانات التحويل -->
+<div class="card">
+
+ <h2>بيانات التحويل</h2>
+
+ <div class="deposit">
+
+  العربون المطلوب
+
+  <strong>100 جنيه</strong>
+
+  <div>رقم التحويل</div>
+
+  <div class="number">01062476562</div>
+
+  <button class="copy" onclick="copyNumber()">
+   نسخ رقم التحويل وتعليمات الإرسال
+  </button>
+
+ </div>
+
+ <p class="note">
+  📸 بعد التحويل اضغط على تأكيد الطلب.
+  سيتم فتح محادثة واتساب، ومن خلالها أرسل صورة إيصال التحويل لتأكيد طلبك.
+ </p>
+
+ <p class="note">
+  🎁 سيتم تحديد هديتك المجانية مع المتجر.
+  🚚 وسيتم الاتفاق على سعر التوصيل، أو يكون مجانياً إذا كان إجمالي الطلب 3000 جنيه أو أكثر.
+ </p>
+
+ <button class="send" onclick="sendOrder()">
+  تأكيد الطلب وإرسال صورة التحويل على واتساب وتحديد هديتك وسعر التوصيل
+ </button>
+
+</div>
+
+
+<button class="back" onclick="location.href='index.html'">
+ العودة للمتجر
+</button>
+
+</main>
+
+
+<script>
+
+const WHATSAPP="201062476562";
+const DEPOSIT=100;
+
+let items=[];
+
+try{
+
+ items=JSON.parse(
+  localStorage.getItem("trend212_checkout_items")||"[]"
+ );
+
+ if(!Array.isArray(items))items=[];
+
+}catch(e){
+
+ items=[];
+
+}
+
+
+// المحافظات والمراكز والمدن
+
+const locations={
+
+"القاهرة":[
+"مدينة نصر","مصر الجديدة","المعادي","حلوان","التجمع الخامس",
+"الشروق","بدر","العباسية","شبرا","عين شمس","المطرية",
+"وسط البلد","المرج","السلام","الزيتون","الوايلي","أخرى"
+],
+
+"الجيزة":[
+"الجيزة","الهرم","فيصل","أكتوبر","الشيخ زايد","حدائق الأهرام",
+"العجوزة","الدقي","إمبابة","البدرشين","الحوامدية",
+"أبو النمرس","كرداسة","أوسيم","منشأة القناطر","أخرى"
+],
+
+"الإسكندرية":[
+"وسط الإسكندرية","المنتزه","سيدي بشر","العجمي","العامرية",
+"برج العرب","محرم بك","سموحة","سيدي جابر","المندرة","أخرى"
+],
+
+"الدقهلية":[
+"المنصورة","طلخا","بلقاس","شربين","ميت غمر","أجا",
+"السنبلاوين","دكرنس","منية النصر","المطرية","الجمالية",
+"المنزلة","تمي الأمديد","بني عبيد","نبروه","ميت سلسيل",
+"الكردي","جمصة","أخرى"
+],
+
+"الشرقية":[
+"الزقازيق","العاشر من رمضان","بلبيس","منيا القمح","أبو حماد",
+"فاقوس","أبو كبير","الحسينية","ديرب نجم","ههيا","الإبراهيمية",
+"كفر صقر","أولاد صقر","مشتول السوق","القرين","أخرى"
+],
+
+"الغربية":[
+"طنطا","المحلة الكبرى","زفتى","كفر الزيات","سمنود",
+"قطور","بسيون","السنطة","أخرى"
+],
+
+"المنوفية":[
+"شبين الكوم","منوف","أشمون","قويسنا","تلا","الباجور",
+"بركة السبع","الشهداء","السادات","سرس الليان","أخرى"
+],
+
+"القليوبية":[
+"بنها","شبرا الخيمة","قليوب","القناطر الخيرية","الخانكة",
+"كفر شكر","طوخ","قها","الخصوص","العبور","أخرى"
+],
+
+"البحيرة":[
+"دمنهور","كفر الدوار","رشيد","إدكو","أبو حمص","أبو المطامير",
+"الدلنجات","إيتاي البارود","حوش عيسى","شبراخيت","كوم حمادة",
+"النوبارية","وادي النطرون","أخرى"
+],
+
+"كفر الشيخ":[
+"كفر الشيخ","دسوق","فوه","مطوبس","بلطيم","الحامول",
+"بيلا","سيدي سالم","قلين","الرياض","برج البرلس","أخرى"
+],
+
+"دمياط":[
+"دمياط","دمياط الجديدة","رأس البر","فارسكور","الزرقا",
+"كفر سعد","كفر البطيخ","عزبة البرج","ميت أبو غالب","أخرى"
+],
+
+"بورسعيد":[
+"بورسعيد","بورفؤاد","الزهور","العرب","المناخ","الضواحي","أخرى"
+],
+
+"الإسماعيلية":[
+"الإسماعيلية","فايد","القنطرة شرق","القنطرة غرب",
+"التل الكبير","أبو صوير","القصاصين","أخرى"
+],
+
+"السويس":[
+"السويس","الأربعين","عتاقة","الجناين","فيصل","أخرى"
+],
+
+"شمال سيناء":[
+"العريش","بئر العبد","الشيخ زويد","رفح","الحسنة","نخل","أخرى"
+],
+
+"جنوب سيناء":[
+"الطور","شرم الشيخ","دهب","نويبع","طابا","سانت كاترين",
+"أبو رديس","أبو زنيمة","رأس سدر","أخرى"
+],
+
+"بني سويف":[
+"بني سويف","الواسطى","ناصر","إهناسيا","ببا","الفشن","سمسطا","أخرى"
+],
+
+"الفيوم":[
+"الفيوم","سنورس","إطسا","طامية","أبشواي","يوسف الصديق","أخرى"
+],
+
+"المنيا":[
+"المنيا","ملوي","مغاغة","بني مزار","أبو قرقاص","سمالوط",
+"دير مواس","مطاي","العدوة","أخرى"
+],
+
+"أسيوط":[
+"أسيوط","ديروط","منفلوط","القوصية","أبنوب","الفتح",
+"أبو تيج","الغنايم","ساحل سليم","البداري","أخرى"
+],
+
+"سوهاج":[
+"سوهاج","أخميم","جرجا","طهطا","المراغة","البلينا",
+"المنشأة","دار السلام","ساقلته","جهينة","أخرى"
+],
+
+"قنا":[
+"قنا","نجع حمادي","دشنا","أبو تشت","فرشوط","قفط",
+"قوص","نقادة","الوقف","أخرى"
+],
+
+"الأقصر":[
+"الأقصر","إسنا","أرمنت","القرنة","البياضية","الزينية","الطود","أخرى"
+],
+
+"أسوان":[
+"أسوان","كوم أمبو","إدفو","دراو","نصر النوبة","أبو سمبل","أخرى"
+],
+
+"البحر الأحمر":[
+"الغردقة","رأس غارب","سفاجا","القصير","مرسى علم","الشلاتين","حلايب","أخرى"
+],
+
+"الوادي الجديد":[
+"الخارجة","الداخلة","الفرافرة","باريس","بلاط","أخرى"
+],
+
+"مطروح":[
+"مرسى مطروح","العلمين","الحمام","الضبعة","سيدي براني",
+"النجيلة","السلوم","سيوة","أخرى"
+]
+
+};
+
+
+// تغيير المدن حسب المحافظة
+
+document.getElementById("governorate").addEventListener("change",function(){
+
+ const center=document.getElementById("center");
+
+ const list=locations[this.value]||[];
+
+ center.innerHTML='<option value="">اختار المركز أو المدينة</option>';
+
+ list.forEach(city=>{
+
+  const option=document.createElement("option");
+
+  option.value=city;
+  option.textContent=city;
+
+  center.appendChild(option);
+
+ });
+
+ center.disabled=list.length===0;
+
+});
+
+
+// قراءة رابط صورة المنتج
+
+function getProductImage(p){
+
+ return p.image || p.img || p.imageUrl || p.imageURL || p.src || "";
+
+}
+
+function getImageLink(image){
+
+ if(!image || image.startsWith("data:"))return "";
+
+ try{
+  return new URL(image,location.href).href;
+ }catch(e){
+  return "";
+ }
+
+}
+
+
+// حماية النصوص
+
+function escapeHTML(value){
+
+ return String(value??"").replace(/[&<>"']/g,function(c){
+
+  return {
+   "&":"&amp;",
+   "<":"&lt;",
+   ">":"&gt;",
+   '"':"&quot;",
+   "'":"&#039;"
+  }[c];
+
+ });
+
+}
+
+
+// حساب الإجمالي
+
+function calculateTotal(){
+
+ return items.reduce((sum,p)=>{
+
+  return sum+Number(p.price)*Number(p.qty);
+
+ },0);
+
+}
+
+
+// عرض المنتجات
+
+function renderOrder(){
+
+ const box=document.getElementById("orderProducts");
+
+ const total=calculateTotal();
+
+ if(!items.length){
+
+  box.innerHTML='<div class="empty">لا توجد منتجات في الطلب</div>';
+
+  document.getElementById("productsTotal").textContent="0 جنيه";
+
+  return;
+
+ }
+
+ box.innerHTML="";
+
+ items.forEach(p=>{
+
+  const subtotal=Number(p.price)*Number(p.qty);
+
+  const image=getProductImage(p);
+
+  const row=document.createElement("div");
+
+  row.className="product-row";
+
+  const info=document.createElement("div");
+
+  info.className="product-info";
+
+  if(image){
+
+   const img=document.createElement("img");
+
+   img.className="product-image";
+   img.src=image;
+   img.alt="صورة المنتج";
+
+   img.onerror=function(){
+    this.style.display="none";
+   };
+
+   info.appendChild(img);
+
+  }
+
+  const details=document.createElement("div");
+
+  details.className="product-details";
+
+  details.innerHTML=
+   "<strong>كود المنتج: </strong>"+escapeHTML(p.code)+
+   "<br><strong>القسم: </strong>"+escapeHTML(p.category||"غير محدد")+
+   "<br><strong>الكمية: </strong>"+escapeHTML(p.qty)+
+   "<br><strong>السعر: </strong>"+subtotal+" جنيه";
+
+  info.appendChild(details);
+
+  row.appendChild(info);
+
+  box.appendChild(row);
+
+ });
+
+ document.getElementById("productsTotal").textContent=total+" جنيه";
+
+ const delivery=document.getElementById("deliveryStatus");
+
+ if(total>=3000){
+
+  delivery.textContent="مجاني 🎉";
+  delivery.className="free";
+
+ }else{
+
+  delivery.textContent="يتم تحديده عبر واتساب";
+  delivery.className="";
+
+ }
+
+}
+
+
+// نسخ رقم التحويل والتعليمات
+
+function copyNumber(){
+
+ const text=
+ "رقم التحويل: 01062476562\n"+
+ "بعد التحويل برجاء إرسال صورة إيصال التحويل على واتساب TREND212 لتأكيد الطلب ❤️";
+
+ navigator.clipboard.writeText(text)
+
+ .then(()=>{
+
+  alert("تم نسخ رقم التحويل ويرجي الاحتفاظ بصوره التحويل لارسالها ف شات الواتساب ❤️");
+
+ })
+
+ .catch(()=>{
+
+  alert(text);
+
+ });
+
+}
+
+
+// تأكيد الطلب
+
+function sendOrder(){
+
+ const name=document.getElementById("name").value.trim();
+
+ const phone=document.getElementById("phone").value.trim();
+
+ const governorate=document.getElementById("governorate").value;
+
+ const center=document.getElementById("center").value;
+
+ const address=document.getElementById("address").value.trim();
+
+ const notes=document.getElementById("notes").value.trim();
+
+
+ if(!items.length){
+
+  alert("لا توجد منتجات في الطلب");
+
+  return;
+
+ }
+
+ if(!name||!phone||!governorate||!center||!address){
+
+  alert("من فضلك أكمل بيانات التوصيل");
+
+  return;
+
+ }
+
+ if(!/^01[0125][0-9]{8}$/.test(phone)){
+
+  alert("رقم الهاتف غير صحيح");
+
+  return;
+
+ }
+
+
+ const total=calculateTotal();
+
+ const freeDelivery=total>=3000;
+
+
+ let message=
+ "🌸 طلب جديد من TREND212\n"+
+ "━━━━━━━━━━━━━━\n"+
+ "الاسم: "+name+"\n"+
+ "الهاتف: "+phone+"\n"+
+ "المحافظة: "+governorate+"\n"+
+ "المركز / المدينة: "+center+"\n"+
+ "العنوان: "+address+"\n"+
+ "━━━━━━━━━━━━━━\n"+
+ "المنتجات:\n";
+
+
+ items.forEach(p=>{
+
+  const image=getProductImage(p);
+
+  const imageLink=getImageLink(image);
+
+  message+=
+   "\nالكود: "+p.code+
+   "\nالقسم: "+(p.category||"غير محدد")+
+   "\nالكمية: "+p.qty+
+   "\nالسعر: "+(Number(p.price)*Number(p.qty))+" جنيه";
+
+  if(imageLink){
+
+   message+="\nرابط صورة المنتج: "+imageLink;
+
+  }
+
+  message+="\n";
+
+ });
+
+
+ message+=
+  "\n━━━━━━━━━━━━━━\n"+
+  "إجمالي المنتجات: "+total+" جنيه\n"+
+  "التوصيل: "+(
+   freeDelivery
+   ?"مجاني 🎉"
+   :"يتم تحديده والاتفاق عليه عبر واتساب"
+  )+"\n"+
+  "🎁 هدية مجانية من TREND212 مع كل طلب!\n"+
+  "يرجى تحديد الهدية المناسبة مع المتجر.\n"+
+  "العربون المطلوب: "+DEPOSIT+" جنيه\n"+
+  "المتبقي من قيمة المنتجات: "+Math.max(0,total-DEPOSIT)+" جنيه\n";
+
+
+ if(notes){
+
+  message+="ملاحظات: "+notes+"\n";
+
+ }
+
+
+ message+=
+  "\nرقم التحويل: 01062476562\n"+
+  "📸 بعد التحويل برجاء إرسال صورة إيصال التحويل في هذه المحادثة.\n"+
+  "🎁 سيتم الاتفاق على هديتك المجانية.\n"+
+  (
+   freeDelivery
+   ?"🚚 طلبك مؤهل للتوصيل المجاني لأن إجمالي المنتجات 3000 جنيه أو أكثر.\n"
+   :"🚚 سيتم تحديد سعر التوصيل معك عبر واتساب.\n"
+  )+
+  "\nشكراً لثقتكم في TREND212 ❤️";
+
+
+ const url=
+  "https://wa.me/"+WHATSAPP+"?text="+encodeURIComponent(message);
+
+
+ window.open(url,"_blank");
+
+}
+
+
+// تشغيل الصفحة
+
+renderOrder();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,254 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f7a8c8">
+<title>الشروط والأحكام | TREND212</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box}
+
+body{
+ margin:0;
+ background:#fff7fa;
+ color:#392b33;
+ font-family:'Cairo',sans-serif;
+}
+
+header{
+ background:white;
+ padding:18px;
+ text-align:center;
+ border-bottom:1px solid #f4dce6;
+}
+
+.logo{
+ color:#e77da9;
+ font-size:27px;
+ font-weight:900;
+ letter-spacing:1px;
+}
+
+.container{
+ width:92%;
+ max-width:650px;
+ margin:35px auto;
+}
+
+.card{
+ background:white;
+ border:1px solid #f3dce6;
+ border-radius:22px;
+ padding:25px;
+ box-shadow:0 8px 30px #e9a9c51a;
+}
+
+h1{
+ text-align:center;
+ font-size:23px;
+ margin:0 0 8px;
+}
+
+.subtitle{
+ text-align:center;
+ color:#927d88;
+ font-size:13px;
+ margin-bottom:25px;
+}
+
+.term{
+ background:#fff8fb;
+ border:1px solid #f6e5ed;
+ border-radius:13px;
+ padding:14px;
+ margin-bottom:12px;
+}
+
+.term h3{
+ margin:0 0 5px;
+ color:#d96e9b;
+ font-size:15px;
+}
+
+.term p{
+ margin:0;
+ font-size:13px;
+ line-height:1.9;
+ color:#695762;
+}
+
+.notice{
+ background:#fff0f6;
+ border-radius:13px;
+ padding:14px;
+ margin:18px 0;
+ font-size:13px;
+ line-height:1.9;
+ color:#8b4565;
+}
+
+.agree{
+ display:flex;
+ align-items:flex-start;
+ gap:10px;
+ margin:20px 0;
+ font-size:13px;
+ line-height:1.8;
+ cursor:pointer;
+}
+
+.agree input{
+ width:19px;
+ height:19px;
+ accent-color:#e77da9;
+ flex-shrink:0;
+ margin-top:5px;
+}
+
+button{
+ width:100%;
+ border:0;
+ padding:15px;
+ border-radius:13px;
+ background:#e77da9;
+ color:white;
+ font-family:inherit;
+ font-size:15px;
+ font-weight:800;
+ cursor:pointer;
+}
+
+button:disabled{
+ background:#d8cbd1;
+ cursor:not-allowed;
+}
+
+.back{
+ display:block;
+ text-align:center;
+ margin-top:17px;
+ color:#d96e9b;
+ text-decoration:none;
+ font-size:13px;
+ font-weight:700;
+}
+
+footer{
+ text-align:center;
+ padding:20px;
+ color:#aa96a0;
+ font-size:12px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+ <div class="logo">TREND212</div>
+</header>
+
+<div class="container">
+
+ <div class="card">
+
+  <h1>الشروط والأحكام</h1>
+  <div class="subtitle">يرجى قراءة الشروط قبل إتمام طلبك</div>
+
+  <div class="term">
+   <h3>1- تأكيد الطلب</h3>
+   <p>
+    يتم تسجيل طلبك بعد إدخال البيانات المطلوبة وإرسال تفاصيل الطلب عبر واتساب.
+   </p>
+  </div>
+
+  <div class="term">
+   <h3>2- العربون</h3>
+   <p>
+    يتم دفع عربون بقيمة 100 جنيه لتأكيد الطلب، ويتم توضيح باقي المبلغ قبل إتمام الاتفاق.
+   </p>
+  </div>
+
+  <div class="term">
+   <h3>3- التوصيل</h3>
+   <p>
+    يتم تحديد تكلفة التوصيل حسب المحافظة والمنطقة، ويتم إبلاغ العميل بالتكلفة من خلال واتساب قبل تأكيد الطلب.
+   </p>
+  </div>
+
+  <div class="term">
+   <h3>4- بيانات الطلب</h3>
+   <p>
+    يجب التأكد من صحة الاسم ورقم الهاتف والمحافظة والعنوان بالتفصيل لتجنب حدوث أي مشكلة في التوصيل.
+   </p>
+  </div>
+
+  <div class="term">
+   <h3>5- الصور والمنتجات</h3>
+   <p>
+    قد تختلف ألوان المنتجات بشكل بسيط بسبب الإضاءة أو اختلاف عرض الشاشة.
+   </p>
+  </div>
+
+  <div class="term">
+   <h3>6- التواصل</h3>
+   <p>
+    يمكن التواصل مع المتجر عبر واتساب للاستفسار عن الطلب أو تفاصيل التوصيل.
+   </p>
+  </div>
+
+  <div class="notice">
+   <strong>تنبيه:</strong>
+   لا يتم اعتبار الطلب مؤكدًا إلا بعد مراجعة بياناته والاتفاق على تفاصيل التوصيل عبر واتساب.
+  </div>
+
+  <label class="agree">
+   <input type="checkbox" id="agree">
+   <span>أوافق على الشروط والأحكام المذكورة وأرغب في استكمال عملية الشراء.</span>
+  </label>
+
+  <button id="continueBtn" disabled onclick="continuePayment()">
+   الموافقة والمتابعة للدفع
+  </button>
+
+  <a class="back" href="index.html">العودة إلى المتجر</a>
+
+ </div>
+</div>
+
+<footer>
+ TREND212 © جميع الحقوق محفوظة
+</footer>
+
+<script>
+const agree = document.getElementById("agree");
+const button = document.getElementById("continueBtn");
+
+agree.addEventListener("change", function(){
+ button.disabled = !this.checked;
+});
+
+function continuePayment(){
+ if(!agree.checked){
+  alert("يجب الموافقة على الشروط أولاً");
+  return;
+ }
+
+ const items = localStorage.getItem("trend212_checkout_items");
+
+ if(!items){
+  alert("السلة فارغة، ارجع للمتجر واختر المنتجات أولاً");
+  window.location.href = "index.html";
+  return;
+ }
+
+ window.location.href = "payment.html";
+}
+</script>
+
+</body>
+</html>
