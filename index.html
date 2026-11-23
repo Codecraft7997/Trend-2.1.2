@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f5a9c5">
+<title>TREND212 | تريند212</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+:root{--pink:#e982ac;--dark:#ce5789;--light:#fff1f6;--text:#34252d}
+body{margin:0;background:#fff;color:var(--text);font-family:Cairo,sans-serif}
+button,input{font-family:inherit}button{cursor:pointer}
+header{position:sticky;top:0;z-index:20;background:white;padding:12px 5%;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 15px #0000000c}
+.logo{font-size:26px;font-weight:900;color:var(--dark)}.logo span{color:#333}
+.header-actions{display:flex;gap:8px}
+.header-btn{border:0;background:var(--light);color:var(--dark);padding:9px 14px;border-radius:11px;font-weight:800}
+.cart-count{background:var(--dark);color:white;border-radius:50%;padding:1px 7px;margin-right:4px}
+.hero{width:92%;margin:22px auto;min-height:300px;border-radius:24px;background:linear-gradient(120deg,#f4b5ce,#fce8ef,#fff5f8);display:flex;align-items:center;justify-content:space-between;padding:35px 7%;overflow:hidden}
+.hero h1{font-size:clamp(32px,5vw,53px);color:#984568;line-height:1.4;margin:0;font-weight:900}
+.hero p{color:#80576b}.main-btn{border:0;background:var(--dark);color:white;padding:12px 26px;border-radius:12px;font-weight:800}
+.hero-art{font-size:100px}.section{padding:20px 5%}
+.section-title{text-align:center;margin:10px 0 25px}.section-title h2{font-size:25px;margin:0;font-weight:900}.section-title p{color:#999;margin:5px}
+.categories{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+.category{border:1px solid #f3dce6;background:#fff7fa;border-radius:17px;overflow:hidden;text-align:center;cursor:pointer;transition:.2s}
+.category:hover{transform:translateY(-4px)}.category img{width:100%;height:155px;object-fit:cover}.category h3{font-size:14px;margin:8px 4px 12px}
+.search-box{max-width:550px;margin:0 auto 20px;display:flex;background:#fff5f9;border:1px solid #f3dce6;border-radius:12px;padding:5px 12px}
+.search-box input{width:100%;border:0;outline:0;background:transparent;padding:10px;font-size:14px}
+.filters{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-bottom:25px}
+.filter{border:1px solid #f3dce6;background:#fff4f8;color:#985574;padding:8px 16px;border-radius:30px;font-weight:700}
+.filter.active{background:var(--dark);color:white}
+.products-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:35px}
+.product{border:1px solid #f3dce6;border-radius:15px;overflow:hidden;background:white;transition:.2s;min-width:0}
+.product:hover{box-shadow:0 8px 22px #00000010}
+.product-image{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;background:#fff3f7;cursor:zoom-in}
+.product-info{padding:11px}.product-code{font-size:14px;font-weight:800;margin:0 0 7px}
+.old-price{color:#999;font-size:13px;text-decoration:line-through}.product-price{color:var(--dark);font-size:19px;font-weight:900}
+.add-btn{width:100%;background:var(--dark);color:white;border:0;border-radius:9px;padding:10px 5px;margin-top:9px;font-weight:800}
+.empty{text-align:center;color:#999;padding:35px;grid-column:1/-1}
+footer{margin-top:45px;background:#fff0f6;text-align:center;padding:30px 15px;color:#89576f}
+footer strong{font-size:24px;color:var(--dark)}
+.overlay{display:none;position:fixed;inset:0;background:#0008;z-index:50}.overlay.show{display:block}
+.drawer{position:fixed;top:0;left:0;width:min(420px,93%);height:100%;background:white;z-index:51;padding:18px;overflow:auto;transform:translateX(-110%);transition:.3s}
+.drawer.show{transform:translateX(0)}
+.drawer-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee;padding-bottom:12px}
+.close-btn{border:0;background:#fff0f6;color:#a64270;border-radius:9px;padding:8px 12px}
+.cart-item{display:flex;align-items:center;gap:11px;padding:13px 0;border-bottom:1px solid #eee}
+.cart-item img{width:65px;height:70px;object-fit:cover;border-radius:9px}
+.cart-item-info{flex:1;min-width:0}.cart-item-info strong{font-size:13px}
+.qty{display:flex;align-items:center;gap:8px;margin-top:6px}
+.qty button{border:0;background:#ffedf4;border-radius:6px;padding:3px 9px}
+.remove{border:0;background:none;color:#d55}
+.total{display:flex;justify-content:space-between;padding:17px 0;font-weight:900;border-top:1px solid #eee}
+.checkout-btn{width:100%;background:var(--dark);color:white;border:0;padding:13px;border-radius:11px;font-weight:900}
+.lightbox{display:none;position:fixed;inset:0;background:#000e;z-index:100;align-items:center;justify-content:center;padding:15px}
+.lightbox.show{display:flex}.lightbox img{max-width:95%;max-height:85vh;object-fit:contain;border-radius:12px}
+.light-close{position:absolute;top:20px;left:20px;background:white;border:0;border-radius:50%;width:42px;height:42px;font-size:22px}
+@media(max-width:750px){
+.categories{grid-template-columns:repeat(2,1fr)}.products-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.category img{height:130px}.hero{min-height:235px;padding:22px 6%}.hero h1{font-size:29px}.hero-art{font-size:65px}
+.logo{font-size:21px}.header-btn{font-size:12px;padding:8px 10px}.product-info{padding:9px}
+.product-code{font-size:13px}.product-price{font-size:17px}
+}
+</style>
+</head>
+<body>
+<header>
+ <div class="logo">TREND<span>212</span></div>
+ <div class="header-actions">
+  <button class="header-btn" onclick="scrollToProducts()">تسوق الآن</button>
+  <button class="header-btn" onclick="openCart()">🛒 السلة <span class="cart-count" id="cartCount">0</span></button>
+ </div>
+</header>
+<section class="hero">
+ <div><h1>كل اللي بتحبيه<br>في مكان واحد ♡</h1><p>اكتشفي أحدث المنتجات واختاري تريندك</p>
+ <button class="main-btn" onclick="scrollToProducts()">تسوقي الآن</button></div><div class="hero-art">🎀</div>
+</section>
+<section class="section">
+ <div class="section-title"><h2>تسوقي حسب القسم</h2><p>اختاري القسم المفضل ليكي</p></div>
+ <div class="categories">
+  <div class="category" onclick="selectCategory('ميكب')"><img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600" alt="ميكب"><h3>ميكب</h3></div>
+  <div class="category" onclick="selectCategory('برفانات + بدي سبلاش')"><img src="https://images.unsplash.com/photo-1541643600914-78b084683601?w=600" alt="برفانات"><h3>برفانات + بدي سبلاش</h3></div>
+  <div class="category" onclick="selectCategory('عناية بالقدم')"><img src="https://global.anaghaya.com/cdn/shop/files/MG_4350_copy.jpg?v=1750749521 alt="عناية بالقدم"><h3>عناية بالقدم</h3></div>
+  <div class="category" onclick="selectCategory('عناية بالبشرة')"><img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=600" alt="عناية بالبشرة"><h3>عناية بالبشرة</h3></div>
+  <div class="category" onclick="selectCategory('عناية بالجسم')"><img src="https://vesa.co.uk/cdn/shop/files/mokann-moisturizing-body-lotion-sandalwood-amber-200mlmokannvesa-beauty-518394.jpg?v=1749684196" alt="عناية بالجسم"><h3>عناية بالجسم</h3></div>
+  <div class="category" onclick="selectCategory('منتجات حليب الإماراتي')"><img src="https:/pinky-cosmetics.com/cdn/shop/files/rn-image_picker_lib_temp_5ac255d4-7cfe-4af7-bcb3-7df809f4e4a1.jpg?v=1779549997"" alt="منتجات حليب الإماراتي"><h3>منتجات حليب الإماراتي</h3></div>
+  <div class="category" onclick="selectCategory('ملابس')"><img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600" alt="ملابس"><h3>ملابس</h3></div>
+  <div class="category" onclick="selectCategory('الأجهزة الكهربائية')"><img src="https://ultraestetica.cl/cdn/shop/files/120240718-15541-1o2gur2_1200x.jpg?v=1726203916" alt="جهاز تنظيف البشرة الكهربائي"><h3>الأجهزة الكهربائية</h3></div>
+ </div>
+</section>
+<section class="section" id="shop">
+ <div class="section-title"><h2>منتجات TREND212</h2><p>اختاري منتجاتك المفضلة</p></div>
+ <div class="search-box"><input id="search" placeholder="ابحثي بكود المنتج..." oninput="renderProducts()"></div>
+ <div class="filters">
+  <button class="filter active" onclick="selectCategory('الكل')">الكل</button>
+  <button class="filter" onclick="selectCategory('ميكب')">ميكب</button>
+  <button class="filter" onclick="selectCategory('برفانات + بدي سبلاش')">برفانات</button>
+  <button class="filter" onclick="selectCategory('عناية بالقدم')">عناية بالقدم</button>
+  <button class="filter" onclick="selectCategory('عناية بالبشرة')">عناية بالبشرة</button>
+  <button class="filter" onclick="selectCategory('عناية بالجسم')">عناية بالجسم</button>
+  <button class="filter" onclick="selectCategory('منتجات حليب الإماراتي')">حليب الإماراتي</button>
+  <button class="filter" onclick="selectCategory('ملابس')">ملابس</button>
+  <button class="filter" onclick="selectCategory('الأجهزة الكهربائية')">الأجهزة الكهربائية</button>
+ </div>
+ <div id="products"></div>
+</section>
+<footer><strong>TREND212</strong><p>اختاري تريندك.. وخليكي مميزة ♡</p><p>جميع الحقوق محفوظة © TREND212</p></footer>
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+<aside class="drawer" id="drawer">
+ <div class="drawer-head"><h2>🛒 سلة مشترياتك</h2><button class="close-btn" onclick="closeCart()">إغلاق ✕</button></div>
+ <div id="cartItems"></div>
+ <div class="total"><span>إجمالي المنتجات</span><span id="total">0 جنيه</span></div>
+ <button class="checkout-btn" onclick="goToTerms()">إتمام الشراء</button>
+</aside>
+<div class="lightbox" id="lightbox" onclick="closeImage()">
+ <button class="light-close" onclick="closeImage()">×</button><img id="largeImage" src="" alt="صورة المنتج">
+</div>
+<script>
+const products = [
+{category:"ميكب",code:"1",price:70,oldPrice:80,src:"1.jpg"},
+{category:"ميكب",code:"2",price:40,oldPrice:50,src:"2.jpg"},
+{category:"ميكب",code:"3",price:45,oldPrice:55,src:"3.jpg"},
+{category:"ميكب",code:"4",price:100,oldPrice:110,src:"4.jpg"},
+{category:"ميكب",code:"5",price:60,oldPrice:70,src:"5.jpg"},
+{category:"ميكب",code:"6",price:40,oldPrice:50,src:"6.jpg"},
+{category:"ميكب",code:"7",price:85,oldPrice:95,src:"7.jpg"},
+{category:"ميكب",code:"8",price:50,oldPrice:60,src:"8.jpg"},
+{category:"ميكب",code:"9",price:85,oldPrice:95,src:"9.jpg"},
+{category:"ميكب",code:"10",price:45,oldPrice:55,src:"10.jpg"},
+{category:"ميكب",code:"11",price:25,oldPrice:35,src:"11.jpg"},
+{category:"ميكب",code:"12",price:250,oldPrice:260,src:"12.jpg"},
+{category:"ميكب",code:"13",price:250,oldPrice:260,src:"13.jpg"},
+{category:"ميكب",code:"14",price:120,oldPrice:130,src:"14.jpg"},
+{category:"ميكب",code:"15",price:75,oldPrice:85,src:"15.jpg"},
+{category:"ميكب",code:"16",price:50,oldPrice:60,src:"16.jpg"},
+{category:"ميكب",code:"17",price:15,oldPrice:25,src:"17.jpg"},
+{category:"ميكب",code:"18",price:65,oldPrice:75,src:"18.jpg"},
+{category:"ميكب",code:"19",price:65,oldPrice:75,src:"19.jpg"},
+{category:"ميكب",code:"20",price:50,oldPrice:60,src:"20.jpg"},
+{category:"ميكب",code:"21",price:30,oldPrice:40,src:"21.jpg"},
+{category:"ميكب",code:"22",price:170,oldPrice:180,src:"22.jpg"},
+{category:"ميكب",code:"23",price:85,oldPrice:95,src:"23.jpg"},
+{category:"ميكب",code:"24",price:25,oldPrice:35,src:"24.jpg"},
+{category:"ميكب",code:"25",price:25,oldPrice:35,src:"25.jpg"},
+{category:"ميكب",code:"26",price:160,oldPrice:170,src:"26.jpg"},
+{category:"ميكب",code:"27",price:65,oldPrice:75,src:"27.jpg"},
+{category:"ميكب",code:"28",price:15,oldPrice:25,src:"28.jpg"},
+{category:"ميكب",code:"29",price:150,oldPrice:160,src:"29.jpg"},
+{category:"ميكب",code:"30",price:65,oldPrice:75,src:"30.jpg"},
+{category:"ميكب",code:"31",price:30,oldPrice:40,src:"31.jpg"},
+{category:"ميكب",code:"32",price:10,oldPrice:20,src:"32.jpg"},
+{category:"ميكب",code:"33",price:35,oldPrice:45,src:"33.jpg"},
+{category:"ميكب",code:"34",price:30,oldPrice:40,src:"34.jpg"},
+{category:"ميكب",code:"35",price:250,oldPrice:260,src:"35.jpg"},
+{category:"ميكب",code:"36",price:230,oldPrice:240,src:"36.jpg"},
+{category:"ميكب",code:"37",price:50,oldPrice:60,src:"37.jpg"},
+{category:"ميكب",code:"38",price:50,oldPrice:60,src:"38.jpg"},
+{category:"ميكب",code:"39",price:20,oldPrice:25,src:"39.jpg"},
+{category:"ميكب",code:"40",price:65,oldPrice:75,src:"40.jpg"},
+{category:"ميكب",code:"41",price:10,oldPrice:20,src:"41.jpg"},
+{category:"ميكب",code:"42",price:30,oldPrice:40,src:"42.jpg"},
+{category:"ميكب",code:"43",price:50,oldPrice:60,src:"43.jpg"},
+{category:"ميكب",code:"44",price:950,oldPrice:1050,src:"44.jpg"},
+{category:"ميكب",code:"45",price:45,oldPrice:55,src:"45.jpg"},
+{category:"ميكب",code:"46",price:40,oldPrice:50,src:"46.jpg"},
+{category:"ميكب",code:"47",price:60,oldPrice:70,src:"47.jpg"},
+{category:"ميكب",code:"48",price:30,oldPrice:40,src:"48.jpg"},
+{category:"ميكب",code:"49",price:35,oldPrice:45,src:"49.jpg"},
+{category:"ميكب",code:"50",price:45,oldPrice:55,src:"50.jpg"},
+{category:"ميكب",code:"51",price:15,oldPrice:25,src:"51.jpg"},
+{category:"ميكب",code:"52",price:15,oldPrice:25,src:"52.jpg"},
+{category:"ميكب",code:"53",price:35,oldPrice:45,src:"53.jpg"},
+{category:"ميكب",code:"54",price:75,oldPrice:85,src:"54.jpg"},
+{category:"ميكب",code:"55",price:20,oldPrice:30,src:"55.jpg"},
+{category:"ميكب",code:"56",price:35,oldPrice:45,src:"56.jpg"},
+{category:"ميكب",code:"57",price:125,oldPrice:135,src:"57.jpg"},
+{category:"ميكب",code:"58",price:50,oldPrice:60,src:"58.jpg"},
+{category:"ميكب",code:"59",price:130,oldPrice:140,src:"59.jpg"},
+{category:"ميكب",code:"60",price:50,oldPrice:60,src:"60.jpg"},
+{category:"ميكب",code:"61",price:85,oldPrice:90,src:"61.jpg"},
+{category:"ميكب",code:"62",price:200,oldPrice:210,src:"62.jpg"},
+{category:"ميكب",code:"63",price:30,oldPrice:40,src:"63.jpg"},
+{category:"ميكب",code:"64",price:65,oldPrice:75,src:"64.jpg"},
+{category:"ميكب",code:"65",price:70,oldPrice:80,src:"65.jpg"},
+{category:"ميكب",code:"66",price:65,oldPrice:75,src:"66.jpg"},
+{category:"ميكب",code:"67",price:20,oldPrice:30,src:"67.jpg"},
+{category:"ميكب",code:"68",price:20,oldPrice:30,src:"68.jpg"},
+{category:"ميكب",code:"69",price:35,oldPrice:45,src:"69.jpg"},
+{category:"ميكب",code:"70",price:250,oldPrice:260,src:"70.jpg"},
+{category:"ميكب",code:"71",price:35,oldPrice:45,src:"71.jpg"},
+{category:"ميكب",code:"72",price:30,oldPrice:40,src:"72.jpg"},
+{category:"ميكب",code:"73",price:170,oldPrice:180,src:"73.jpg"},
+{category:"ميكب",code:"74",price:35,oldPrice:45,src:"74.jpg"},
+{category:"ميكب",code:"75",price:65,oldPrice:85,src:"75.jpg"},
+{category:"ميكب",code:"76",price:35,oldPrice:45,src:"76.jpg"},
+{category:"ميكب",code:"77",price:75,oldPrice:85,src:"77.jpg"},
+{category:"ميكب",code:"78",price:65,oldPrice:75,src:"78.jpg"},
+{category:"ميكب",code:"79",price:30,oldPrice:40,src:"79.jpg"},
+{category:"ميكب",code:"80",price:75,oldPrice:85,src:"80.jpg"},
+{category:"ميكب",code:"81",price:45,oldPrice:55,src:"81.jpg"},
+{category:"ميكب",code:"82",price:220,oldPrice:230,src:"82.jpg"},
+{category:"ميكب",code:"83",price:65,oldPrice:75,src:"83.jpg"},
+{category:"ميكب",code:"84",price:15,oldPrice:25,src:"84.jpg"},
+{category:"ميكب",code:"85",price:15,oldPrice:25,src:"85.jpg"},
+{category:"ميكب",code:"86",price:45,oldPrice:55,src:"86.jpg"},
+{category:"ميكب",code:"87",price:130,oldPrice:140,src:"87.jpg"},
+{category:"ميكب",code:"88",price:85,oldPrice:95,src:"88.jpg"},
+{category:"ميكب",code:"89",price:130,oldPrice:140,src:"89.jpg"},
+{category:"ميكب",code:"90",price:130,oldPrice:140,src:"90.jpg"},
+{category:"ميكب",code:"91",price:130,oldPrice:140,src:"91.jpg"},
+{category:"ميكب",code:"92",price:5,oldPrice:15,src:"92.jpg"},
+{category:"ميكب",code:"93",price:1250,oldPrice:1260,src:"93.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١1",price:150,oldPrice:200,src:"١1.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١2",price:350,oldPrice:400,src:"١2.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١3",price:350,oldPrice:400,src:"١3.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١4",price:350,oldPrice:400,src:"١4.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١5",price:900,oldPrice:950,src:"١5.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١6",price:350,oldPrice:400,src:"١6.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١7",price:350,oldPrice:400,src:"١7.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١8",price:350,oldPrice:400,src:"١8.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١9",price:350,oldPrice:400,src:"١9.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١10",price:350,oldPrice:400,src:"١10.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١11",price:350,oldPrice:400,src:"١11.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١12",price:150,oldPrice:200,src:"١12.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١13",price:350,oldPrice:400,src:"١13.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١14",price:100,oldPrice:150,src:"١14.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١15",price:35,oldPrice:85,src:"١15.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١16",price:100,oldPrice:150,src:"١16.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١17",price:50,oldPrice:100,src:"١17.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١18",price:40,oldPrice:90,src:"١18.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١19",price:45,oldPrice:95,src:"١19.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١20",price:75,oldPrice:125,src:"١20.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١21",price:35,oldPrice:85,src:"١21.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١22",price:45,oldPrice:95,src:"١22.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١23",price:150,oldPrice:200,src:"١23.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١24",price:350,oldPrice:400,src:"١24.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١25",price:160,oldPrice:210,src:"١25.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١26",price:250,oldPrice:300,src:"١26.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١27",price:300,oldPrice:350,src:"١27.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١28",price:350,oldPrice:400,src:"١28.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١29",price:65,oldPrice:115,src:"١29.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١30",price:250,oldPrice:300,src:"١30.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١31",price:200,oldPrice:250,src:"١31.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١32",price:250,oldPrice:300,src:"١32.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١33",price:250,oldPrice:300,src:"١33.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١34",price:65,oldPrice:115,src:"١34.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١35",price:250,oldPrice:300,src:"١35.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١36",price:100,oldPrice:150,src:"١36.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١37",price:250,oldPrice:300,src:"١37.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١38",price:100,oldPrice:150,src:"١38.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١39",price:100,oldPrice:150,src:"١39.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١40",price:100,oldPrice:150,src:"١40.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١41",price:40,oldPrice:90,src:"١41.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١42",price:350,oldPrice:400,src:"١42.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١43",price:115,oldPrice:165,src:"١43.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١44",price:100,oldPrice:150,src:"١44.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١45",price:350,oldPrice:400,src:"١45.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١46",price:350,oldPrice:400,src:"١46.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١47",price:350,oldPrice:400,src:"١47.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١48",price:300,oldPrice:350,src:"١48.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١49",price:350,oldPrice:400,src:"١49.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١50",price:450,oldPrice:500,src:"١50.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١51",price:350,oldPrice:400,src:"١51.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١52",price:350,oldPrice:400,src:"١52.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١53",price:40,oldPrice:90,src:"١53.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١54",price:35,oldPrice:85,src:"١54.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١55",price:1000,oldPrice:1050,src:"١55.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١56",price:350,oldPrice:400,src:"١56.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١57",price:350,oldPrice:400,src:"١57.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١58",price:350,oldPrice:400,src:"١58.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١59",price:350,oldPrice:400,src:"١59.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١60",price:350,oldPrice:400,src:"١60.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١61",price:250,oldPrice:300,src:"١61.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١62",price:450,oldPrice:500,src:"١62.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١63",price:250,oldPrice:300,src:"١63.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١64",price:500,oldPrice:550,src:"١64.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١65",price:450,oldPrice:500,src:"١65.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١66",price:350,oldPrice:400,src:"١66.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١67",price:450,oldPrice:500,src:"١67.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١68",price:350,oldPrice:400,src:"١68.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١69",price:35,oldPrice:85,src:"١69.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١70",price:100,oldPrice:150,src:"١70.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١71",price:350,oldPrice:400,src:"١71.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١72",price:350,oldPrice:400,src:"١72.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١73",price:55,oldPrice:105,src:"١73.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١74",price:350,oldPrice:400,src:"١74.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١75",price:350,oldPrice:400,src:"١75.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١76",price:350,oldPrice:400,src:"١76.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١77",price:350,oldPrice:400,src:"١77.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١78",price:150,oldPrice:200,src:"١78.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١79",price:350,oldPrice:400,src:"١79.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١80",price:350,oldPrice:400,src:"١80.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١81",price:155,oldPrice:205,src:"١81.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١82",price:300,oldPrice:350,src:"١82.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١83",price:70,oldPrice:120,src:"١83.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١84",price:150,oldPrice:200,src:"١84.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١85",price:350,oldPrice:400,src:"١85.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١86",price:150,oldPrice:200,src:"١86.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١87",price:350,oldPrice:400,src:"١87.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١88",price:250,oldPrice:300,src:"١88.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١89",price:350,oldPrice:400,src:"١89.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١90",price:350,oldPrice:400,src:"١90.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١91",price:350,oldPrice:400,src:"١91.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١92",price:85,oldPrice:135,src:"١92.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١93",price:100,oldPrice:150,src:"١93.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١94",price:150,oldPrice:200,src:"١94.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١95",price:100,oldPrice:150,src:"١95.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١96",price:55,oldPrice:105,src:"١96.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١97",price:100,oldPrice:150,src:"١97.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١98",price:55,oldPrice:105,src:"١98.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١99",price:65,oldPrice:115,src:"١99.jpg"},
+{category:"برفانات + بدي سبلاش",code:"١100",price:350,oldPrice:400,src:"١100.jpg"},
+{category:"ملابس",code:"a",price:300,oldPrice:350,src:"a.jpg"},
+{category:"ملابس",code:"b",price:300,oldPrice:350,src:"b.jpg"},
+{category:"ملابس",code:"c",price:350,oldPrice:400,src:"c.jpg"},
+{category:"ملابس",code:"d",price:350,oldPrice:400,src:"d.jpg"},
+{category:"ملابس",code:"e",price:350,oldPrice:400,src:"e.jpg"},
+{category:"ملابس",code:"f",price:300,oldPrice:350,src:"f.jpg"},
+{category:"ملابس",code:"g",price:250,oldPrice:300,src:"g.jpg"},
+{category:"ملابس",code:"h",price:300,oldPrice:350,src:"h.jpg"},
+{category:"ملابس",code:"i",price:350,oldPrice:400,src:"i.jpg"},
+{category:"ملابس",code:"j",price:350,oldPrice:400,src:"j.jpg"},
+{category:"ملابس",code:"k",price:250,oldPrice:300,src:"k.jpg"},
+{category:"ملابس",code:"l",price:250,oldPrice:300,src:"l.jpg"},
+{category:"ملابس",code:"m",price:250,oldPrice:300,src:"m.jpg"},
+{category:"ملابس",code:"n",price:350,oldPrice:400,src:"n.jpg"},
+{category:"ملابس",code:"o",price:250,oldPrice:300,src:"o.jpg"},
+{category:"ملابس",code:"p",price:280,oldPrice:330,src:"p.jpg"},
+{category:"ملابس",code:"q",price:300,oldPrice:350,src:"q.jpg"},
+{category:"ملابس",code:"r",price:250,oldPrice:300,src:"r.jpg"},
+{category:"ملابس",code:"s",price:350,oldPrice:400,src:"s.jpg"},
+{category:"ملابس",code:"t",price:250,oldPrice:300,src:"t.jpg"},
+{category:"ملابس",code:"u",price:250,oldPrice:300,src:"u.jpg"},
+{category:"ملابس",code:"v",price:250,oldPrice:300,src:"v.jpg"},
+{category:"ملابس",code:"w",price:250,oldPrice:300,src:"w.jpg"},
+{category:"ملابس",code:"x",price:350,oldPrice:400,src:"x.jpg"},
+{category:"ملابس",code:"y",price:300,oldPrice:350,src:"y.jpg"},
+{category:"ملابس",code:"z",price:250,oldPrice:300,src:"z.jpg"},
+{category:"ملابس",code:"aa",price:280,oldPrice:330,src:"aa.jpg"},
+{category:"ملابس",code:"ab",price:250,oldPrice:300,src:"ab.jpg"},
+{category:"ملابس",code:"ac",price:300,oldPrice:350,src:"ac.jpg"},
+{category:"ملابس",code:"ad",price:300,oldPrice:350,src:"ad.jpg"},
+{category:"ملابس",code:"ae",price:300,oldPrice:350,src:"ae.jpg"},
+{category:"ملابس",code:"af",price:250,oldPrice:300,src:"af.jpg"},
+{category:"ملابس",code:"ag",price:250,oldPrice:300,src:"ag.jpg"},
+{category:"ملابس",code:"ah",price:280,oldPrice:330,src:"ah.jpg"},
+{category:"ملابس",code:"ai",price:850,oldPrice:950,src:"ai.jpg"},
+{category:"ملابس",code:"aj",price:250,oldPrice:300,src:"aj.jpg"},
+{category:"ملابس",code:"ak",price:250,oldPrice:300,src:"ak.jpg"},
+{category:"ملابس",code:"al",price:250,oldPrice:300,src:"al.jpg"},
+{category:"ملابس",code:"am",price:250,oldPrice:300,src:"am.jpg"},
+{category:"ملابس",code:"an",price:850,oldPrice:950,src:"an.jpg"},
+{category:"ملابس",code:"ao",price:250,oldPrice:300,src:"ao.jpg"},
+{category:"ملابس",code:"ap",price:300,oldPrice:350,src:"ap.jpg"},
+{category:"ملابس",code:"aq",price:250,oldPrice:300,src:"aq.jpg"},
+{category:"ملابس",code:"ar",price:300,oldPrice:350,src:"ar.jpg"},
+{category:"ملابس",code:"as",price:250,oldPrice:300,src:"as.jpg"},
+{category:"ملابس",code:"at",price:300,oldPrice:350,src:"at.jpg"},
+{category:"ملابس",code:"au",price:250,oldPrice:300,src:"au.jpg"},
+{category:"ملابس",code:"av",price:250,oldPrice:300,src:"av.jpg"},
+{category:"ملابس",code:"aw",price:250,oldPrice:300,src:"aw.jpg"},
+{category:"ملابس",code:"ax",price:350,oldPrice:400,src:"ax.jpg"},
+{category:"عناية بالقدم",code:"٣1",price:150,oldPrice:160,src:"٣1.jpg"},
+{category:"عناية بالقدم",code:"٣2",price:300,oldPrice:310,src:"٣2.jpg"},
+{category:"عناية بالقدم",code:"٣3",price:40,oldPrice:50,src:"٣3.jpg"},
+{category:"عناية بالقدم",code:"٣4",price:50,oldPrice:60,src:"٣4.jpg"},
+{category:"عناية بالقدم",code:"٣5",price:20,oldPrice:30,src:"٣5.jpg"},
+{category:"عناية بالقدم",code:"٣6",price:25,oldPrice:35,src:"٣6.jpg"},
+{category:"عناية بالقدم",code:"٣7",price:380,oldPrice:390,src:"٣7.jpg"},
+{category:"عناية بالبشرة",code:"٢1",price:95,oldPrice:105,src:"٢1.jpg"},
+{category:"عناية بالبشرة",code:"٢2",price:85,oldPrice:95,src:"٢2.jpg"},
+{category:"عناية بالبشرة",code:"٢3",price:130,oldPrice:140,src:"٢3.jpg"},
+{category:"عناية بالبشرة",code:"٢4",price:50,oldPrice:60,src:"٢4.jpg"},
+{category:"عناية بالبشرة",code:"٢5",price:25,oldPrice:35,src:"٢5.jpg"},
+{category:"عناية بالبشرة",code:"٢6",price:85,oldPrice:95,src:"٢6.jpg"},
+{category:"عناية بالبشرة",code:"٢7",price:500,oldPrice:510,src:"٢7.jpg"},
+{category:"عناية بالبشرة",code:"٢8",price:35,oldPrice:45,src:"٢8.jpg"},
+{category:"عناية بالبشرة",code:"٢9",price:65,oldPrice:75,src:"٢9.jpg"},
+{category:"عناية بالبشرة",code:"٢10",price:15,oldPrice:25,src:"٢10.jpg"},
+{category:"عناية بالبشرة",code:"٢11",price:150,oldPrice:160,src:"٢11.jpg"},
+{category:"عناية بالبشرة",code:"٢12",price:45,oldPrice:55,src:"٢12.jpg"},
+{category:"عناية بالبشرة",code:"٢13",price:100,oldPrice:110,src:"٢13.jpg"},
+{category:"عناية بالبشرة",code:"٢14",price:130,oldPrice:140,src:"٢14.jpg"},
+{category:"عناية بالبشرة",code:"٢15",price:30,oldPrice:40,src:"٢15.jpg"},
+{category:"عناية بالبشرة",code:"٢16",price:150,oldPrice:160,src:"٢16.jpg"},
+{category:"عناية بالبشرة",code:"٢17",price:25,oldPrice:35,src:"٢17.jpg"},
+{category:"عناية بالبشرة",code:"٢18",price:50,oldPrice:60,src:"٢18.jpg"},
+{category:"عناية بالبشرة",code:"٢19",price:35,oldPrice:45,src:"٢19.jpg"},
+{category:"عناية بالبشرة",code:"٢20",price:35,oldPrice:45,src:"٢20.jpg"},
+{category:"عناية بالبشرة",code:"٢21",price:80,oldPrice:90,src:"٢21.jpg"},
+{category:"عناية بالبشرة",code:"٢22",price:150,oldPrice:160,src:"٢22.jpg"},
+{category:"عناية بالبشرة",code:"٢23",price:120,oldPrice:130,src:"٢23.jpg"},
+{category:"عناية بالبشرة",code:"٢24",price:50,oldPrice:60,src:"٢24.jpg"},
+{category:"عناية بالبشرة",code:"٢25",price:2,oldPrice:12,src:"٢25.jpg"},
+{category:"عناية بالبشرة",code:"٢26",price:110,oldPrice:120,src:"٢26.jpg"},
+{category:"عناية بالبشرة",code:"٢27",price:15,oldPrice:25,src:"٢27.jpg"},
+{category:"عناية بالبشرة",code:"٢28",price:50,oldPrice:60,src:"٢28.jpg"},
+{category:"عناية بالبشرة",code:"٢29",price:50,oldPrice:60,src:"٢29.jpg"},
+{category:"عناية بالبشرة",code:"٢30",price:45,oldPrice:55,src:"٢30.jpg"},
+{category:"عناية بالبشرة",code:"٢31",price:20,oldPrice:30,src:"٢31.jpg"},
+{category:"عناية بالبشرة",code:"٢32",price:20,oldPrice:30,src:"٢32.jpg"},
+{category:"عناية بالبشرة",code:"٢33",price:50,oldPrice:60,src:"٢33.jpg"},
+{category:"عناية بالبشرة",code:"٢34",price:20,oldPrice:30,src:"٢34.jpg"},
+{category:"عناية بالبشرة",code:"٢35",price:45,oldPrice:55,src:"٢35.jpg"},
+{category:"عناية بالبشرة",code:"٢36",price:65,oldPrice:75,src:"٢36.jpg"},
+{category:"عناية بالبشرة",code:"٢37",price:35,oldPrice:45,src:"٢37.jpg"},
+{category:"عناية بالبشرة",code:"٢38",price:45,oldPrice:55,src:"٢38.jpg"},
+{category:"عناية بالبشرة",code:"٢39",price:25,oldPrice:35,src:"٢39.jpg"},
+{category:"عناية بالبشرة",code:"٢40",price:65,oldPrice:75,src:"٢40.jpg"},
+{category:"عناية بالجسم",code:"٤1",price:130,oldPrice:140,src:"٤1.jpg"},
+{category:"عناية بالجسم",code:"٤2",price:450,oldPrice:460,src:"٤2.jpg"},
+{category:"عناية بالجسم",code:"٤3",price:80,oldPrice:90,src:"٤3.jpg"},
+{category:"عناية بالجسم",code:"٤4",price:50,oldPrice:60,src:"٤4.jpg"},
+{category:"عناية بالجسم",code:"٤5",price:50,oldPrice:60,src:"٤5.jpg"},
+{category:"عناية بالجسم",code:"٤6",price:250,oldPrice:260,src:"٤6.jpg"},
+{category:"عناية بالجسم",code:"٤7",price:45,oldPrice:55,src:"٤7.jpg"},
+{category:"عناية بالجسم",code:"٤8",price:45,oldPrice:55,src:"٤8.jpg"},
+{category:"عناية بالجسم",code:"٤9",price:350,oldPrice:360,src:"٤9.jpg"},
+{category:"عناية بالجسم",code:"٤10",price:100,oldPrice:110,src:"٤10.jpg"},
+{category:"عناية بالجسم",code:"٤11",price:200,oldPrice:210,src:"٤11.jpg"},
+{category:"عناية بالجسم",code:"٤12",price:100,oldPrice:110,src:"٤12.jpg"},
+{category:"عناية بالجسم",code:"٤13",price:250,oldPrice:260,src:"٤13.jpg"},
+{category:"عناية بالجسم",code:"٤14",price:10,oldPrice:20,src:"٤14.jpg"},
+{category:"عناية بالجسم",code:"٤15",price:75,oldPrice:85,src:"٤15.jpg"},
+{category:"عناية بالجسم",code:"٤16",price:150,oldPrice:160,src:"٤16.jpg"},
+{category:"عناية بالجسم",code:"٤17",price:150,oldPrice:160,src:"٤17.jpg"},
+{category:"عناية بالجسم",code:"٤18",price:130,oldPrice:140,src:"٤18.jpg"},
+{category:"عناية بالجسم",code:"٤19",price:75,oldPrice:85,src:"٤19.jpg"},
+{category:"عناية بالجسم",code:"٤20",price:200,oldPrice:210,src:"٤20.jpg"},
+{category:"عناية بالجسم",code:"٤21",price:70,oldPrice:80,src:"٤21.jpg"},
+{category:"عناية بالجسم",code:"٤22",price:150,oldPrice:160,src:"٤22.jpg"},
+{category:"عناية بالجسم",code:"٤23",price:70,oldPrice:89,src:"٤23.jpg"},
+{category:"عناية بالجسم",code:"٤24",price:350,oldPrice:360,src:"٤24.jpg"},
+{category:"عناية بالجسم",code:"٤25",price:70,oldPrice:80,src:"٤25.jpg"},
+{category:"عناية بالجسم",code:"٤26",price:70,oldPrice:80,src:"٤26.jpg"},
+{category:"عناية بالجسم",code:"٤27",price:40,oldPrice:50,src:"٤27.jpg"},
+{category:"عناية بالجسم",code:"٤28",price:200,oldPrice:210,src:"٤28.jpg"},
+{category:"عناية بالجسم",code:"٤29",price:150,oldPrice:160,src:"٤29.jpg"},
+{category:"عناية بالجسم",code:"٤30",price:150,oldPrice:160,src:"٤30.jpg"},
+{category:"عناية بالجسم",code:"٤31",price:55,oldPrice:65,src:"٤31.jpg"},
+{category:"عناية بالجسم",code:"٤32",price:40,oldPrice:50,src:"٤32.jpg"},
+{category:"عناية بالجسم",code:"٤33",price:40,oldPrice:50,src:"٤33.jpg"},
+{category:"عناية بالجسم",code:"٤34",price:55,oldPrice:65,src:"٤34.jpg"},
+{category:"عناية بالجسم",code:"٤35",price:150,oldPrice:160,src:"٤35.jpg"},
+{category:"عناية بالجسم",code:"٤36",price:130,oldPrice:140,src:"٤36.jpg"},
+{category:"عناية بالجسم",code:"٤37",price:130,oldPrice:140,src:"٤37.jpg"},
+{category:"عناية بالجسم",code:"٤38",price:130,oldPrice:140,src:"٤38.jpg"},
+{category:"عناية بالجسم",code:"٤39",price:100,oldPrice:110,src:"٤39.jpg"},
+{category:"عناية بالجسم",code:"٤40",price:170,oldPrice:180,src:"٤40.jpg"},
+{category:"عناية بالجسم",code:"٤41",price:50,oldPrice:60,src:"٤41.jpg"},
+{category:"عناية بالجسم",code:"٤42",price:35,oldPrice:45,src:"٤42.jpg"},
+{category:"عناية بالجسم",code:"٤43",price:50,oldPrice:60,src:"٤43.jpg"},
+{category:"عناية بالجسم",code:"٤44",price:85,oldPrice:95,src:"٤44.jpg"},
+{category:"عناية بالجسم",code:"٤45",price:250,oldPrice:260,src:"٤45.jpg"},
+{category:"عناية بالجسم",code:"٤46",price:130,oldPrice:140,src:"٤46.jpg"},
+{category:"عناية بالجسم",code:"٤47",price:100,oldPrice:110,src:"٤47.jpg"},
+{category:"عناية بالجسم",code:"٤48",price:85,oldPrice:95,src:"٤48.jpg"},
+{category:"عناية بالجسم",code:"٤49",price:185,oldPrice:195,src:"٤49.jpg"},
+{category:"عناية بالجسم",code:"٤50",price:185,oldPrice:195,src:"٤50.jpg"},
+{category:"عناية بالجسم",code:"٤51",price:185,oldPrice:195,src:"٤51.jpg"},
+{category:"عناية بالجسم",code:"٤52",price:185,oldPrice:195,src:"٤52.jpg"},
+{category:"عناية بالجسم",code:"٤53",price:350,oldPrice:360,src:"٤53.jpg"},
+{category:"عناية بالجسم",code:"٤54",price:170,oldPrice:180,src:"٤54.jpg"},
+{category:"عناية بالجسم",code:"٤55",price:200,oldPrice:210,src:"٤55.jpg"},
+{category:"عناية بالجسم",code:"٤56",price:150,oldPrice:160,src:"٤56.jpg"},
+{category:"عناية بالجسم",code:"٤57",price:180,oldPrice:190,src:"٤57.jpg"},
+{category:"عناية بالجسم",code:"٤58",price:200,oldPrice:210,src:"٤58.jpg"},
+{category:"عناية بالجسم",code:"٤59",price:200,oldPrice:210,src:"٤59.jpg"},
+{category:"عناية بالجسم",code:"٤60",price:200,oldPrice:210,src:"٤60.jpg"},
+{category:"منتجات حليب الإماراتي",code:"٥1",price:600,oldPrice:610,src:"٥1.jpg"},
+{category:"منتجات حليب الإماراتي",code:"٥2",price:220,oldPrice:230,src:"٥2.jpg"},
+{category:"منتجات حليب الإماراتي",code:"٥3",price:150,oldPrice:160,src:"٥3.jpg"},
+{category:"منتجات حليب الإماراتي",code:"٥4",price:170,oldPrice:180,src:"٥4.jpg"},
+{category:"منتجات حليب الإماراتي",code:"٥5",price:130,oldPrice:140,src:"٥5.jpg"},
+{category:"منتجات حليب الإماراتي",code:"٥6",price:65,oldPrice:75,src:"٥6.jpg"},
+{category:"منتجات حليب الإماراتي",code:"٥7",price:50,oldPrice:60,src:"٥7.jpg"},
+{category:"منتجات حليب الإماراتي",code:"٥8",price:2000,oldPrice:2010,src:"٥8.jpg"},
+{category:"منتجات حليب الإماراتي",code:"٥9",price:350,oldPrice:360,src:"٥9.jpg"},
+{category:"منتجات حليب الإماراتي",code:"٥10",price:95,oldPrice:101,src:"٥10.jpg"},
+{category:"الأجهزة الكهربائية",code:"٦1",price:200,oldPrice:210,src:"٦1.jpg"},
+{category:"الأجهزة الكهربائية",code:"٦2",price:600,oldPrice:610,src:"٦2.jpg"},
+{category:"الأجهزة الكهربائية",code:"٦3",price:180,oldPrice:190,src:"٦3.jpg"},
+{category:"الأجهزة الكهربائية",code:"٦4",price:250,oldPrice:260,src:"٦4.jpg"},
+{category:"الأجهزة الكهربائية",code:"٦5",price:180,oldPrice:190,src:"٦5.jpg"},
+{category:"الأجهزة الكهربائية",code:"٦6",price:170,oldPrice:180,src:"٦6.jpg"},
+{category:"الأجهزة الكهربائية",code:"٦7",price:250,oldPrice:260,src:"٦7.jpg"},
+{category:"الأجهزة الكهربائية",code:"٦8",price:145,oldPrice:155,src:"٦8.jpg"},
+{category:"الأجهزة الكهربائية",code:"٦9",price:250,oldPrice:260,src:"٦9.jpg"},
+{category:"الأجهزة الكهربائية",code:"٦10",price:1500,oldPrice:1510,src:"٦10.jpg"},
+{category:"الأجهزة الكهربائية",code:"٦11",price:170,oldPrice:180,src:"٦11.jpg"},
+{category:"الأجهزة الكهربائية",code:"٦12",price:2500,oldPrice:2510,src:"٦12.jpg"},
+{category:"الأجهزة الكهربائية",code:"٦13",price:125,oldPrice:135,src:"٦13.jpg"},
+{category:"الأجهزة الكهربائية",code:"٦14",price:150,oldPrice:160,src:"٦14.jpg"},
+{category:"الأجهزة الكهربائية",code:"٦15",price:650,oldPrice:660,src:"٦15.jpg"},
+{category:"الأجهزة الكهربائية",code:"٦16",price:500,oldPrice:510,src:"٦16.jpg"},
+{category:"الأجهزة الكهربائية",code:"٦17",price:250,oldPrice:260,src:"٦17.jpg"},
+{category:"الأجهزة الكهربائية",code:"٦18",price:150,oldPrice:160,src:"٦18.jpg"},
+];
+
+let selectedCategory="الكل";
+let cart=[];
+try{cart=JSON.parse(localStorage.getItem("trend212_cart")||"[]");if(!Array.isArray(cart))cart=[]}catch(e){cart=[]}
+
+function shuffleProducts(list){
+ const copy=[...list];
+ for(let i=copy.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]]}
+ return copy;
+}
+const mixedProducts=shuffleProducts(products);
+products.forEach((p,i)=>p.id="product-"+i);
+mixedProducts.forEach(p=>p.id="product-"+products.indexOf(p));
+
+function renderProducts(){
+ const container=document.getElementById("products");
+ const search=document.getElementById("search").value.trim().toLowerCase();
+ container.innerHTML="";
+ const items=mixedProducts.filter(p=>{
+  const matchCategory=selectedCategory==="الكل"||p.category===selectedCategory;
+  const matchSearch=p.code.toLowerCase().includes(search);
+  return matchCategory&&matchSearch;
+ });
+ if(!items.length){container.innerHTML='<div class="empty">لا توجد منتجات مطابقة للبحث</div>';return}
+ const grid=document.createElement("div");grid.className="products-grid";
+ items.forEach(p=>{
+  const card=document.createElement("div");card.className="product";
+  const img=document.createElement("img");img.className="product-image";img.src=p.src;img.alt="كود المنتج "+p.code;img.loading="lazy";img.onclick=()=>openImage(p.src);
+  const info=document.createElement("div");info.className="product-info";
+  const code=document.createElement("p");code.className="product-code";code.textContent="كود المنتج: "+p.code;
+  const old=document.createElement("div");old.className="old-price";
+   if(p.oldPrice && p.price>0 && p.oldPrice>p.price) old.textContent=p.oldPrice+" جنيه";
+   else old.style.display="none";
+  const price=document.createElement("div");price.className="product-price";price.textContent=p.price+" جنيه";
+  const add=document.createElement("button");add.className="add-btn";add.textContent="أضف إلى السلة +";add.onclick=()=>addToCart(p.id);
+  info.append(code,old,price,add);card.append(img,info);grid.appendChild(card);
+ });
+ container.appendChild(grid);
+}
+
+function selectCategory(category){
+ selectedCategory=category;
+ document.getElementById("search").value="";
+ const labels={
+  "الكل":"الكل",
+  "ميكب":"ميكب",
+  "برفانات + بدي سبلاش":"برفانات",
+  "عناية بالقدم":"عناية بالقدم",
+  "عناية بالبشرة":"عناية بالبشرة",
+  "عناية بالجسم":"عناية بالجسم",
+  "منتجات حليب الإماراتي":"حليب الإماراتي",
+  "ملابس":"ملابس",
+  "الأجهزة الكهربائية":"الأجهزة الكهربائية"
+ };
+ document.querySelectorAll(".filter").forEach(btn=>{
+  btn.classList.toggle("active",btn.textContent.trim()===labels[category]);
+ });
+ renderProducts();
+ document.getElementById("shop").scrollIntoView({behavior:"smooth"});
+}
+function openImage(src){document.getElementById("largeImage").src=src;document.getElementById("lightbox").classList.add("show")}
+function closeImage(){document.getElementById("lightbox").classList.remove("show")}
+function saveCart(){localStorage.setItem("trend212_cart",JSON.stringify(cart))}
+function addToCart(id){
+ const item=cart.find(p=>p.id===id);if(item)item.qty++;else cart.push({id:id,qty:1});
+ saveCart();updateCart();alert("تمت إضافة المنتج للسلة ♡");
+}
+function getTotal(){return cart.reduce((sum,item)=>{const p=products.find(x=>x.id===item.id);return sum+(p?p.price*item.qty:0)},0)}
+function updateCart(){
+ cart=cart.filter(item=>products.some(p=>p.id===item.id));
+ document.getElementById("cartCount").textContent=cart.reduce((sum,p)=>sum+p.qty,0);
+ const container=document.getElementById("cartItems");container.innerHTML="";
+ if(!cart.length)container.innerHTML='<div class="empty">السلة فارغة حالياً ♡</div>';
+ cart.forEach(item=>{
+  const p=products.find(x=>x.id===item.id);if(!p)return;
+  const row=document.createElement("div");row.className="cart-item";
+  const img=document.createElement("img");img.src=p.src;
+  const info=document.createElement("div");info.className="cart-item-info";
+  const name=document.createElement("strong");name.textContent="كود المنتج: "+p.code;
+  const price=document.createElement("div");price.textContent=p.price+" جنيه";
+  const qty=document.createElement("div");qty.className="qty";
+  const plus=document.createElement("button");plus.textContent="+";plus.onclick=()=>changeQty(p.id,1);
+  const count=document.createElement("span");count.textContent=item.qty;
+  const minus=document.createElement("button");minus.textContent="-";minus.onclick=()=>changeQty(p.id,-1);
+  const remove=document.createElement("button");remove.className="remove";remove.textContent="حذف";remove.onclick=()=>removeItem(p.id);
+  qty.append(plus,count,minus,remove);info.append(name,price,qty);row.append(img,info);container.appendChild(row);
+ });
+ document.getElementById("total").textContent=getTotal()+" جنيه";saveCart();
+}
+function changeQty(id,amount){const item=cart.find(p=>p.id===id);if(!item)return;item.qty+=amount;if(item.qty<=0)removeItem(id);else updateCart()}
+function removeItem(id){cart=cart.filter(p=>p.id!==id);updateCart()}
+function openCart(){document.getElementById("drawer").classList.add("show");document.getElementById("overlay").classList.add("show")}
+function closeCart(){document.getElementById("drawer").classList.remove("show");document.getElementById("overlay").classList.remove("show")}
+function scrollToProducts(){document.getElementById("shop").scrollIntoView({behavior:"smooth"})}
+function goToTerms(){
+ if(!cart.length){alert("السلة فارغة!");return}
+ const orderItems=cart.map(item=>{
+  const p=products.find(x=>x.id===item.id);
+  return {code:p.code,category:p.category,price:p.price,qty:item.qty,src:p.src}
+ });
+ localStorage.setItem("trend212_checkout_items",JSON.stringify(orderItems));
+ closeCart();window.location.href="terms.html";
+}
+renderProducts();updateCart();
+</script>
+</body>
+</html>
